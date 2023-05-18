@@ -3,6 +3,7 @@ import logging as logger
 from elad_testing.src.utilities.genericUtilities import generate_random_email_and_password
 from elad_testing.src.helpers.customers_helper import CustomerHelper
 from elad_testing.src.dao.customers_dao import CustomersDAO
+from elad_testing.src.utilities.requestsUtilities import RequestsUtility
 
 
 @pytest.mark.tcid29
@@ -18,13 +19,12 @@ def test_create_costumer_only_email():
     cust_obj = CustomerHelper()
     cust_api_info = cust_obj.create_customer(email=email, password=password)
 
-    # import pdb;
-    # pdb.set_trace()
-
     # verify email and first name in the response
     assert cust_api_info['email'] == email, f"Create customer api return wrong email. Email: {email}"
     assert cust_api_info['first_name'] == '', "Create customer api returned value for first name although it needs to " \
                                               "be empty"
+
+    # verify customer is created in DB
     cust_dao = CustomersDAO()
     cust_info = cust_dao.get_customer_by_email(email)
 
@@ -33,7 +33,32 @@ def test_create_costumer_only_email():
     assert id_in_api == id_in_db, f"Create customer response id now same as ID in db" \
                                   f"Email: {email}"
 
-    # import pdb;
-    # pdb.set_trace()
+@pytest.mark.tcid47
+def test_create_customer_fail_for_existing_email():
+    # get existing email from db
+    cust_dao = CustomersDAO()
+    existing_cust = cust_dao.get_random_customer_from_db()
+    existing_email = existing_cust[0]['user_email']
 
-    # verify customer is created in DB
+    # call the API
+    # cust_obj = CustomerHelper()
+    # cust_api_info = cust_obj.create_customer(email=existing_email, password="Password1")
+
+    req_helper = RequestsUtility()
+
+    payload = {"email": existing_email, "password": "Password1"}
+    cust_api_info = req_helper.post(endpoint='customers', payload=payload, expected_status_code=400)
+
+    assert cust_api_info['code'] == 'registration-error-email-exists', f"Create customer with existing user error " \
+                                                                       f"code is not correct. Expected " \
+                                                                       f"registration-error-email-exists, " \
+                                                                       f"Actual {cust_api_info['code']}"
+    #
+    # assert cust_api_info['message'] == 'An account is already registered with your email address', f"Create customer with existing user error " \
+    #                                                                    f"code is not correct. Expected " \
+    #                                                                    f"registration-error-email-exists, " \
+    #                                                                    f"Actual {cust_api_info['message']}"
+
+
+
+
