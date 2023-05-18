@@ -1,0 +1,7 @@
+elad_testing.egg-info
+dist
+build
+.pytest_cache
+elad_testing/src/configs/passwords.py
+.idea
+.gitattributes
