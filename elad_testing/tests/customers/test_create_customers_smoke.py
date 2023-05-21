@@ -5,7 +5,7 @@ from elad_testing.src.helpers.customers_helper import CustomerHelper
 from elad_testing.src.dao.customers_dao import CustomersDAO
 from elad_testing.src.utilities.requestsUtilities import RequestsUtility
 
-
+@pytest.mark.customers
 @pytest.mark.tcid29
 def test_create_costumer_only_email():
     logger.info("TEST: Create new customer with email and password")
@@ -33,6 +33,7 @@ def test_create_costumer_only_email():
     assert id_in_api == id_in_db, f"Create customer response id now same as ID in db" \
                                   f"Email: {email}"
 
+@pytest.mark.customers
 @pytest.mark.tcid47
 def test_create_customer_fail_for_existing_email():
     # get existing email from db
