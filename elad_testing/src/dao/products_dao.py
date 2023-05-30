@@ -18,3 +18,8 @@ class ProductsDAO(object):
         sql = f"SELECT * FROM local.wp_posts where ID = {product_id};"
 
         return self.db_helper.execute_select(sql)
+
+    def get_products_after_given_date(self, date):
+        sql = f'SELECT * FROM local.wp_posts where post_type="product" AND post_date > "{date}";'
+
+        return self.db_helper.execute_select(sql)

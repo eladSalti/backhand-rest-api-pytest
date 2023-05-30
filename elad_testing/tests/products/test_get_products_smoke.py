@@ -1,12 +1,11 @@
 import logging as logger
 import pytest
-
 from elad_testing.src.dao.products_dao import ProductsDAO
 from elad_testing.src.helpers.products_helper import ProductsHelper
 from elad_testing.src.utilities.requestsUtilities import RequestsUtility
 
+pytestmark = [pytest.mark.products, pytest.mark.smoke]
 
-@pytest.mark.products
 @pytest.mark.tcid24
 def test_get_all_products():
     req_helper = RequestsUtility()
@@ -16,7 +15,6 @@ def test_get_all_products():
     assert res_api, f"Response of list all products is empty"
 
 
-@pytest.mark.products
 @pytest.mark.tcid25
 def test_get_product_by_id():
     # Get a random product from DB

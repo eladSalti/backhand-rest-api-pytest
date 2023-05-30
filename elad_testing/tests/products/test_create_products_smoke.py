@@ -3,7 +3,8 @@ from elad_testing.src.utilities.genericUtilities import generate_random_string
 from elad_testing.src.helpers.products_helper import ProductsHelper
 from elad_testing.src.dao.products_dao import ProductsDAO
 
-@pytest.mark.product
+pytestmark = [pytest.mark.products, pytest.mark.smoke]
+
 @pytest.mark.tcid26
 def test_create_1_simple_product():
     # generate some data

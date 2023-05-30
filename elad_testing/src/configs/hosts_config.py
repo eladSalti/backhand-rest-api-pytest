@@ -6,6 +6,13 @@ API_HOSTS = {
     "prod": ""
 }
 
+
+WOO_API_HOSTS = {
+    "test": "http://localhost:10005",
+    "dev": "",
+    "prod": ""
+}
+
 DB_HOST = {
 
 
